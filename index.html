@@ -129,6 +129,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-git命令常用场景整理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/07/git命令常用场景整理/">git命令常用场景整理</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/07/git命令常用场景整理/" class="archive-article-date">
+  	<time datetime="2018-04-07T03:03:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用git有一段时间了，这是个异常强大的版本管理工具，给日常开发带来了极大的便利，所以，本文主要整理了几个git在平时开发中比较常见，同时也比较简单的场景，包括：</p>
+<p>1.创建关联仓库<br>2.创建/切换/合并/删除分支<br>3.正常提交<br>4.部分提交<br>5.修改代码后切分支提交<br>6.开发中途切分支工作<br>7.解决代码冲突<br>8.代码撤销&amp;回滚<br>9.文件提交修改记录查询</p>
+<hr>
+<h2 id="1-创建关联仓库"><a href="#1-创建关联仓库" class="headerlink" title="1.创建关联仓库"></a>1.创建关联仓库</h2><p>1）创建远程仓库：点击github的左上角“+”按钮 -&gt; New repository进行添加<br>2）创建本地仓库: 新建一个文件夹，进入新文件夹中执行git init进行创建，eg:<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mrdir myProject</span><br><span class="line">cd myProject</span><br><span class="line">git init</span><br></pre></td></tr></table></figure></p>
+<p>3）远程仓库关联到本地仓库： git clone 现有项目(http/ssh)，以ssh为例：<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:Dolanf/test.git</span><br></pre></td></tr></table></figure></p>
+<p>4)本地仓库关联到远程仓库：<br>    在本地仓库执行git remote add origin 仓库项目，其中origin是仓库的名字，eg：<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git clone git@github.com:Dolanf/test.git</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-创建-切换-合并-删除分支"><a href="#2-创建-切换-合并-删除分支" class="headerlink" title="2.创建/切换/合并/删除分支"></a>2.创建/切换/合并/删除分支</h2><p>1）新建本地新分支：git branch &lt;branchName&gt;<br>2）切换分支： git checkout &lt;branchName&gt;<br>3）合并分支： git merge &lt;branchName&gt;<br>4）删除分支：<br>    删除本地分支：git branch -d &lt;branchName&gt;<br>    删除远程分支：git push origin –delete &lt;branchName&gt;</p>
+<h2 id="3-正常提交"><a href="#3-正常提交" class="headerlink" title="3.正常提交"></a>3.正常提交</h2><p>常规的提交流程包括add、commit、pull、push四个步骤，不过如果我们加上git status(查看修改状态)和git diff(查看修改记录)可以更好的保证代码提交质量。以下是常规步骤：</p>
+<p>  1）git status  查看当前修改状态<br>  2）git diff  /   git diff  xxx    查看修改记录<br>  3）git add . /  git add xxx  / git add –all  将当前修改的内容添加到git缓存区<br>  4）git commit -m ‘msg’  将修改保存到本地仓库中<br>  5）git pull -r   拉取远程的更新并与本地分支合并<br>  6）git push origin &lt;branchName&gt;  将本地分支推送到远程分支上</p>
+<h2 id="4-部分提交"><a href="#4-部分提交" class="headerlink" title="4.部分提交"></a>4.部分提交</h2><p>   有时候当我们需求开发到一半的时候，忽然需要修复一个bug，或是当前开发的进度被阻碍，等待时间用来开发其他的东西……这时候可能会需要提交部分代码。<br>   1）使用 git add xxx 和 git commit -m ‘msg’ 将需要提交的代码添加本地仓库中<br>   2）经过步骤一后，如果现在直接使用git pull -r ,会提示错误<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: cannot pull with rebase: You have unstaged changes.</span><br></pre></td></tr></table></figure></p>
+<p>   这是因为本地还有修改没有进行存储和提交。<br>   所以这时可以使用git stash暂存代码改动。<br>   3）步骤2使用git stash后，我们就可以正常进行后续的git pull -r和git push 操作了。<br>   4）代码提交完毕后，再使用git stash pop恢复暂存区和工作区的进度。</p>
+<p>步骤总结： git add -&gt; git commit -&gt; git stash -&gt; git pull -&gt; git push -&gt; git stash pop</p>
+<h2 id="5-修改代码后切分支提交"><a href="#5-修改代码后切分支提交" class="headerlink" title="5.修改代码后切分支提交"></a>5.修改代码后切分支提交</h2><p>有的时候人老了，容易健忘，比如在A分支修好了一个bug或开发完一个需求后，才发现当前的分支不对，正确的应该是在B分支开发……所以这时就需要把A分支的修改提交到B分支。<br>1）git stash    暂存代码改动<br>2）git checkout B   切换到B分支<br>3）git stash pop  将修改恢复在B分支上<br>经历了以上三个步骤后，就可以再B分支进行代码提交了。</p>
+<h2 id="6-开发中途切分支工作"><a href="#6-开发中途切分支工作" class="headerlink" title="6.开发中途切分支工作"></a>6.开发中途切分支工作</h2><p>当在A分支的工作开发到一半的时候，碰上了紧急情况，需要切换到另一个分支进行开发……这个时候可以commit原分支的代码改动，也可以使用git stash处理。<br><strong>1.commit原分支的代码改动：</strong><br>    1）首先使用git add 和 git commit把A分支的修改的代码提交到本地仓库中。<br>    2）然后切换到B分支上进行开发。<br>    3）B分支的开发工作完成后，再切回A分支。<br>    4）使用gitlog查看需要退回的commitId，最后git reset commitId撤销A分支的提交，就可以接着进行开发了。<br><strong>2.使用git stash：</strong><br>    1）首先使用git stash把A分支的修改暂存。<br>    2）然后切换到B分支上进行开发。<br>    3）B分支的开发工作完成后，再切回A分支。<br>    4）最后使用git stash pop恢复A分支的修改，就可以接着进行开发了。</p>
+<h2 id="7-解决代码冲突"><a href="#7-解决代码冲突" class="headerlink" title="7.解决代码冲突"></a>7.解决代码冲突</h2><p>提交代码时遇到了冲突：<br>    首先把文件的冲突解决，解决之后使用<br>    1）git add .<br>    2）git rebase –continue<br>    没问题之后就可以接着进行git pull -r 和 git push操作了~</p>
+<h2 id="8-代码撤销-amp-回滚"><a href="#8-代码撤销-amp-回滚" class="headerlink" title="8.代码撤销&amp;回滚"></a>8.代码撤销&amp;回滚</h2><p><strong>1.撤销：对本地仓库中的代码进行还原。</strong><br>1）修改了文件，还没进行git add（工作区）：<br>   git checkout &lt;fileName&gt;<br>2）进行了git add，还没进行git commit（缓存区）：<br>   git reset head &lt;fileName&gt;<br>3）进行了git commit，还没有push(本地仓库)：<br>   git reset head commitId</p>
+<p><strong>2.回滚：对远程仓库的代码进行还原。</strong><br>1）撤销前一次的提交：<br>    git revert head<br>    或者是  git reset –hard head^<br>（注：revert是放弃指定提交的修改，但是会生成一次新的提交；reset是指将head指针指到指定提交，历史记录中不会出现放弃的提交记录。）</p>
+<p>2）回滚到某一次的提交：<br>    git revert commitId</p>
+<h2 id="9-文件提交修改记录查询"><a href="#9-文件提交修改记录查询" class="headerlink" title="9.文件提交修改记录查询"></a>9.文件提交修改记录查询</h2><p>项目开发中经常会遇到查看文件提交或者修改记录的情况，不得不说git log和git show真的很实用：<br>git log  查看项目中所有提交记录<br>git log -p  查看项目中提交的详细改动<br>git log -p &lt;fileName&gt;  查看某个文件的详细改动记录<br>git show commitId   查看某次提交的详细改动<br>git log –author=xxx.xx  查看某个人的所有提交记录</p>
+<p>更多查询细节参看git log –help  和   git show –help</p>
+<p>结束语：本文总结了几个git常见的比较简单的场景，由于git命令众多且强大，文中列举的解决方法并不是唯一的，如果不足，还请指正~</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/07/git命令常用场景整理/">View More >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -280,6 +374,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
