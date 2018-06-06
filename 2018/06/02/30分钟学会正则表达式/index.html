@@ -15,7 +15,7 @@
 <meta property="og:url" content="gaodonglan.cn/2018/06/02/30分钟学会正则表达式/index.html">
 <meta property="og:site_name" content="Dolanf’s Blog">
 <meta property="og:description" content="正则表达式，又称为规则表达式，是一种特殊的文本模式（或者说是逻辑公式），用于描述特定的规则从而对字符串进行匹配和操作。初接触正则的人可能会觉得比较难懂，咋一看各种符号拼在一起没有规律可循。其实正则涉及到的字符并不多，只要把常用的字符意思记住了（就像背单词一样），之后大部分(只要组合不是特别复杂)的正则基本都能读懂了，平时代码中一些比较简单的匹配也可以用正则来代替，是很方便的~本文主要介绍常用的正则">
-<meta property="og:updated_time" content="2018-06-03T11:16:28.000Z">
+<meta property="og:updated_time" content="2018-06-03T11:42:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="30分钟学会正则表达式">
 <meta name="twitter:description" content="正则表达式，又称为规则表达式，是一种特殊的文本模式（或者说是逻辑公式），用于描述特定的规则从而对字符串进行匹配和操作。初接触正则的人可能会觉得比较难懂，咋一看各种符号拼在一起没有规律可循。其实正则涉及到的字符并不多，只要把常用的字符意思记住了（就像背单词一样），之后大部分(只要组合不是特别复杂)的正则基本都能读懂了，平时代码中一些比较简单的匹配也可以用正则来代替，是很方便的~本文主要介绍常用的正则">
@@ -181,7 +181,7 @@
 </tr>
 <tr>
 <td style="text-align:left">\w</td>
-<td style="text-align:left">匹配字母、数字、下划线</td>
+<td style="text-align:left">匹配字母、数字、下划线  等价于[A-Za-z0-9_]</td>
 </tr>
 <tr>
 <td style="text-align:left">\s</td>
@@ -198,7 +198,7 @@
 </tbody>
 </table>
 <h2 id="2-字符转义"><a href="#2-字符转义" class="headerlink" title="2.字符转义"></a>2.字符转义</h2><p>由于元字符本身含有特殊意义，在正则中无法指定，如[.]会匹配除换行符以外的任意字符，而不会匹配.本身。<br>这个时候就需要用到转义符\来取消元字符本身的意义，如果要匹配.和$，需要写成\.和\$，当然，匹配\本身需写成\\。</p>
-<h2 id="3-反义"><a href="#3-反义" class="headerlink" title="3.反义"></a>3.反义</h2><p>把字母改成大写之后，表示的意义就反过来了：</p>
+<h2 id="3-反义"><a href="#3-反义" class="headerlink" title="3.反义"></a>3.反义</h2><p>把元字符的字母改成大写之后，表示的意义就反过来了：</p>
 <table>
 <thead>
 <tr>
@@ -217,7 +217,7 @@
 </tr>
 <tr>
 <td style="text-align:left">\W</td>
-<td style="text-align:left">匹配不是字母、数字、下划线的字符</td>
+<td style="text-align:left">匹配不是字母、数字、下划线的字符  等价于[^A-Za-z0-9_]</td>
 </tr>
 <tr>
 <td style="text-align:left">\S</td>
